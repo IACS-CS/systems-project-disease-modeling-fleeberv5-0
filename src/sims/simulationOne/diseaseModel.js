@@ -19,17 +19,15 @@ and not interacting with others in each round.
 */
 
 /**
- * Authors: 
- * 
+ * Authors:
+ *
  * What we are simulating:
- * 
+ *
  * What elements we have to add:
- * 
+ *
  * In plain language, what our model does:
- * 
+ *
  */
-
-
 
 export const defaultSimulationParameters = {
   infectionChance: 50,
@@ -91,8 +89,8 @@ export const updatePopulation = (population, params) => {
   // Example logic... each person is in contact with the person next to them...
   for (let i = 0; i < population.length; i++) {
     let p = population[i];
-    // This logic just grabs the next person in line -- you will want to 
-    // change this to fit your model! 
+    // This logic just grabs the next person in line -- you will want to
+    // change this to fit your model!
     let contact = population[(i + 1) % population.length];
     // Update the individual based on the contact...
     updateIndividual(p, contact, params);
@@ -100,25 +98,10 @@ export const updatePopulation = (population, params) => {
   return population;
 };
 
-
 // Stats to track (students can add more)
 // Any stats you add here should be computed
 // by Compute Stats below
-export const trackedStats = [
-  { label: "Total Infected", value: "infected" },
-];
-
-// Example: Compute stats (students customize)
-export const computeStatistics = (population, round) => {
-  let infected = 0;
-  for (let p of population) {
-    if (p.infected) {
-      infected += 1; // Count the infected
-    }
-  }
-  return { round, infected };
-};
-
+export const trackedStats = [{ label: "Total Infected", value: "infected" }];
 
 // Example: Compute stats (students customize)
 export const computeStatistics = (population, round) => {
@@ -134,4 +117,3 @@ export const computeStatistics = (population, round) => {
   }
   return { round, infected, newlyInfected };
 };
-
