@@ -25,22 +25,21 @@ import { shufflePopulation } from "../../lib/shufflePopulation";
 */
 
 /**
- * Authors: 
- * 
- * What we are simulating:
- * 
- * What we are attempting to model from the real world:
- * 
- * What we are leaving out of our model:
- * 
- * What elements we have to add:
- * 
- * What parameters we will allow users to "tweak" to adjust the model:
- * 
+ * Authors:
+ *
+ * What we are simulating: The Flu
+ *
+ * What we are attempting to model from the real world: Deaths, Immunity & Length of Sickness
+ *
+ * What we are leaving out of our model: Quarantine
+ *
+ * What elements we have to add: Handshake, Infection
+ *
+ * What parameters we will allow users to "tweak" to adjust the model: Length of Immunity, Length of Sickness
+ *
  * In plain language, what our model does:
- * 
+ *
  */
-
 
 // Default parameters -- any properties you add here
 // will be passed to your disease model when it runs.
@@ -78,8 +77,6 @@ export const createPopulation = (size = 1600) => {
   return population;
 };
 
-
-
 // Example: Update population (students decide what happens each turn)
 export const updatePopulation = (population, params) => {
   // Figure out your logic here...
@@ -89,9 +86,7 @@ export const updatePopulation = (population, params) => {
 // Stats to track (students can add more)
 // Any stats you add here should be computed
 // by Compute Stats below
-export const trackedStats = [
-  { label: "Total Infected", value: "infected" },
-];
+export const trackedStats = [{ label: "Total Infected", value: "infected" }];
 
 // Example: Compute stats (students customize)
 export const computeStatistics = (population, round) => {
@@ -103,5 +98,3 @@ export const computeStatistics = (population, round) => {
   }
   return { round, infected };
 };
-
-
