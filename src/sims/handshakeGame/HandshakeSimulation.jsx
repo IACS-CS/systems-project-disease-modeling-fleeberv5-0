@@ -139,7 +139,7 @@ const SimpleSimulation = () => {
   // Auto-run simulation effect
   useEffect(() => {
     if (autoMode) {
-      setTimeout(runTurn, 500);
+      setTimeout(runTurn, 50);
     }
   }, [autoMode, population]);
 
