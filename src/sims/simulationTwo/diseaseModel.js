@@ -45,9 +45,9 @@ import { shufflePopulation } from "../../lib/shufflePopulation";
 // will be passed to your disease model when it runs.
 
 export const defaultSimulationParameters = {
-  // Add any parameters you want here with their initial values
-  //  -- you will also have to add inputs into your jsx file if you want
-  // your user to be able to change these parameters.
+  deathPercentage: 4.7,
+  immunity: 5,
+  sickDays: 7,
 };
 
 /* Creates your initial population. By default, we *only* track whether people
@@ -69,11 +69,15 @@ export const createPopulation = (size = 1600) => {
       x: (100 * (i % sideSize)) / sideSize, // X-coordinate within 100 units
       y: (100 * Math.floor(i / sideSize)) / sideSize, // Y-coordinate scaled similarly
       infected: false,
+      dead: false,
+      sickDays: 0,
+      immunity: 0,
     });
   }
   // Infect patient zero...
   let patientZero = population[Math.floor(Math.random() * size)];
   patientZero.infected = true;
+  patientZero.sickDays = 1;
   return population;
 };
 
