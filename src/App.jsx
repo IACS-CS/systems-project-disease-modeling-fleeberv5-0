@@ -10,7 +10,7 @@ export const App = () => {
       component: HandshakeSimulation,
     },
     {
-      name: "My Second Simulation (CHANGE NAME in APP.jsx)",
+      name: "The flu",
       component: Simulation2,
     },
   ];

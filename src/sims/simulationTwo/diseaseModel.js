@@ -45,6 +45,7 @@ import { shufflePopulation } from "../../lib/shufflePopulation";
 // will be passed to your disease model when it runs.
 
 export const defaultSimulationParameters = {
+  infectionChance: 50,
   deathPercentage: 4.7,
   immunity: 5,
   sickDays: 7,
@@ -81,9 +82,50 @@ export const createPopulation = (size = 1600) => {
   return population;
 };
 
+const maybeInfectPerson = (person, params) => {
+  if (Math.random() * 100 < params.infectionChance) {
+    if (!person.infected) {
+      person.infected = true;
+      person.newlyInfected = true;
+    }
+  }
+};
+
 // Example: Update population (students decide what happens each turn)
 export const updatePopulation = (population, params) => {
-  // Figure out your logic here...
+  // First, no one is newly infected any more...
+  for (let p of population) {
+    p.newlyInfected = false;
+    if (p.infected) {
+      p.sickDays++;
+    }
+    if (p.sickDays > params.illnessLenghth) {
+      p.infected = false;
+      p.sickDays = 0;
+    }
+  }
+  const shuffledPopulation = shufflePopulation(population);
+  // Now that we've shuffled, let's move through the population by two's
+  for (let i = 0; i < shuffledPopulation.length - 1; i += 2) {
+    let personA = shuffledPopulation[i];
+    let personB = shuffledPopulation[i + 1];
+
+    // let's have them meet at person A's spot...
+    // Check if we're at the edge...
+    // Keep track of partners for nudging...
+    personA.partner = personB;
+    personB.partner = personA;
+
+    // Now let's see if they infect each other
+    if (personA.infected && !personB.infected) {
+      maybeInfectPerson(personB, params);
+    }
+    if (personB.infected && !personA.infected) {
+      maybeInfectPerson(personA, params);
+    }
+  }
+
+  // We return the original population (order unchanged)
   return population;
 };
 
