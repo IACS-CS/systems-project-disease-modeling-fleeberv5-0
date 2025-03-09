@@ -152,10 +152,7 @@ const SimpleSimulation = () => {
           random find each other and shake hands. If one of them is infected,
           the other gets infected too.
         </p>
-        <p>
-          This model was created by Mr. Hinkle. If you make any changes to this
-          model, give yourself credit here :-)
-        </p>
+        <p>This model was created by Mr. Hinkle. Modified by R. Mamet</p>
         <p>
           Population: {population.length}. Infected:{" "}
           {population.filter((p) => p.infected).length}
