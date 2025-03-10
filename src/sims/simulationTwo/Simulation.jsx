@@ -23,7 +23,11 @@ const renderPatients = (population) => {
   }
 
   function renderEmoji(p) {
-    if (p.newlyInfected) {
+    if (p.dead) {
+      return "💀"; // Skull for dead
+    } else if (p.immune) {
+      return "😷"; // Face with Medical Mask for immune
+    } else if (p.newlyInfected) {
       return "🤧"; // Sneezing Face for new cases
     } else if (p.infected) {
       return "🤢"; // Vomiting Face for already sick
@@ -102,11 +106,11 @@ const Simulation = () => {
   return (
     <div>
       <section className="top">
-        <h1>My Second Custom Simulation</h1>
+        <h1>The Flu simulation</h1>
         <p>
-          Edit <code>simulationTwo/diseaseModel.js</code> to define how your
-          simulation works. This one should try to replicate features of a real
-          world illness and/or intervention.
+          Simulates the spread of the flu through a population, tracking
+          infection rates, duration of sickness, and immunity. Coded by R. Mamet
+          and Xavier.
         </p>
 
         <p>

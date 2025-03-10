@@ -37,8 +37,7 @@ import { shufflePopulation } from "../../lib/shufflePopulation";
  *
  * What parameters we will allow users to "tweak" to adjust the model: Length of Immunity, Length of Sickness
  *
- * In plain language, what our model does:
- *
+ * In plain language, what our model does: Simulates the spread of the flu through a population, tracking infection rates, duration of sickness, and immunity.
  */
 
 // Default parameters -- any properties you add here
@@ -72,6 +71,7 @@ export const createPopulation = (size = 1600) => {
       infected: false,
       dead: false,
       sickDays: 0,
+      immune: false,
       immunity: 0,
     });
   }
@@ -84,7 +84,7 @@ export const createPopulation = (size = 1600) => {
 
 const maybeInfectPerson = (person, params) => {
   if (Math.random() * 100 < params.infectionChance) {
-    if (!person.infected) {
+    if (!person.infected && !person.dead && person.immunity === 0) {
       person.infected = true;
       person.newlyInfected = true;
     }
@@ -96,19 +96,45 @@ export const updatePopulation = (population, params) => {
   // First, no one is newly infected any more...
   for (let p of population) {
     p.newlyInfected = false;
+    if (p.dead) {
+      p.sickDays = 0; // Reset sick days for dead people
+      p.immunity = 0;
+      p.immune = false; // Reset immunity for dead people
+      p.infected = false; // Reset infection for dead people
+      continue; // Skip dead people
+    }
     if (p.infected) {
       p.sickDays++;
     }
-    if (p.sickDays > params.illnessLenghth) {
+    if (p.immune) {
+      p.infected = false; // Reset infection for immune people
+      p.sickDays = 0; // Reset sick days for immune people
+      p.immunity++;
+      p.immune = true;
+      if (p.immunity > params.immunity) {
+        p.immune = false;
+        p.immunity = 0;
+      }
+    }
+    if (p.sickDays > params.sickDays) {
       p.infected = false;
       p.sickDays = 0;
+      p.immunity = 1;
+      p.immune = true;
+    }
+    if (p.infected && Math.random() * 100 < params.deathPercentage) {
+      p.sickDays = 0; // Reset sick days for dead people
+      p.immunity = 0; // Reset immunity for dead people
+      p.infected = false; // Reset infection for dead people
+      p.dead = true;
     }
   }
-  const shuffledPopulation = shufflePopulation(population);
+  // const shuffledPopulation = shufflePopulation(population);
+  const notDeadShuffled = shufflePopulation(population.filter((p) => !p.dead));
   // Now that we've shuffled, let's move through the population by two's
-  for (let i = 0; i < shuffledPopulation.length - 1; i += 2) {
-    let personA = shuffledPopulation[i];
-    let personB = shuffledPopulation[i + 1];
+  for (let i = 0; i < notDeadShuffled.length - 1; i += 2) {
+    let personA = notDeadShuffled[i];
+    let personB = notDeadShuffled[i + 1];
 
     // let's have them meet at person A's spot...
     // Check if we're at the edge...
@@ -132,15 +158,27 @@ export const updatePopulation = (population, params) => {
 // Stats to track (students can add more)
 // Any stats you add here should be computed
 // by Compute Stats below
-export const trackedStats = [{ label: "Total Infected", value: "infected" }];
+export const trackedStats = [
+  { label: "Total Infected", value: "infected" },
+  { label: "Total Immune", value: "immune" },
+  { label: "Total Dead", value: "dead" },
+];
 
 // Example: Compute stats (students customize)
 export const computeStatistics = (population, round) => {
   let infected = 0;
+  let immune = 0;
+  let dead = 0;
   for (let p of population) {
     if (p.infected) {
       infected += 1; // Count the infected
     }
+    if (p.immune) {
+      immune += 1; // Count the immune
+    }
+    if (p.dead) {
+      dead += 1; // Count the dead
+    }
   }
-  return { round, infected };
+  return { round, infected, immune, dead };
 };

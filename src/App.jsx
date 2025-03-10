@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import HandshakeSimulation from "./sims/handshakeGame/HandshakeSimulation";
-import Simulation from "./sims/simulationOne/Simulation";
 import Simulation2 from "./sims/simulationTwo/Simulation";
 
 export const App = () => {
