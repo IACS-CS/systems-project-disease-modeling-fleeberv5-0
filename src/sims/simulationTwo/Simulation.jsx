@@ -99,7 +99,7 @@ const Simulation = () => {
   // Auto-run simulation effect
   useEffect(() => {
     if (autoMode) {
-      setTimeout(runTurn, 500);
+      setTimeout(runTurn, 50);
     }
   }, [autoMode, population]);
 
@@ -115,7 +115,9 @@ const Simulation = () => {
 
         <p>
           Population: {population.length}. Infected:{" "}
-          {population.filter((p) => p.infected).length}
+          {population.filter((p) => p.infected).length}. Dead:{" "}
+          {population.filter((p) => p.dead).length}. Immune:{" "}
+          {population.filter((p) => p.immune).length}.
         </p>
 
         <button onClick={runTurn}>Next Turn</button>
@@ -143,6 +145,34 @@ const Simulation = () => {
                 step="10"
                 onChange={(e) =>
                   setPopSize(Math.sqrt(parseInt(e.target.value)))
+                }
+              />
+            </div>
+          </label>
+          <label>
+            Death Rate
+            <div className="vertical-stack">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={simulationParameters.deathPercentage}
+                onChange={(e) =>
+                  setSimulationParameters({
+                    ...simulationParameters,
+                    deathPercentage: parseFloat(e.target.value),
+                  })
+                }
+              />
+              <input
+                type="number"
+                value={simulationParameters.deathPercentage}
+                step="0.1"
+                onChange={(e) =>
+                  setSimulationParameters({
+                    ...simulationParameters,
+                    deathPercentage: parseFloat(e.target.value),
+                  })
                 }
               />
             </div>
