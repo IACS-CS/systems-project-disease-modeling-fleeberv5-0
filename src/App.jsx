@@ -19,6 +19,8 @@ export const App = () => {
   const renderChooser = () => (
     <div className="simulation-chooser">
       <h1>Simulation Playground</h1>
+      <p>R. Mamet and Xavier E.</p>
+      <p>For this project, we were supposed to simulate a disease that is spreading. For the first challenge, we were tasked with adding a new parameter. My group added an immunity parameter. For the second challenge, we were supposed to recreate an existing disease, and we chose the flu.</p>
       <ul>
         {sims.map((sim) => (
           <li key={sim.name}>
